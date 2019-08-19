@@ -1,6 +1,8 @@
 {
   "name": "testmapbox",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular",
   "id": "90daca5c"
 }
