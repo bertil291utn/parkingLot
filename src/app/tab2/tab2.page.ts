@@ -27,7 +27,16 @@ export class Tab2Page {
       zoom: 15
     });
 
+    // let marker = new mapboxgl.Marker()
+    // .setLngLat(center)
+    // .addTo(map);
 
+    map.addControl(new mapboxgl.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true
+      },
+      trackUserLocation: true
+    }));
   }//initmapbox
 
   private async getLocation() {
