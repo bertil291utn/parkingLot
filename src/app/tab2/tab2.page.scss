@@ -1,4 +1,8 @@
 #map_canvas {
-    height: 300px;
-    width: 100%;
-  }
+  height: 100%; /* 300px; */
+  // width: 100%;
+}
+
+ion-footer ion-label {
+  color: #293281; // #3e478c;
+}
