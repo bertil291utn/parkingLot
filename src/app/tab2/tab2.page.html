@@ -1,22 +1,55 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar>
     <ion-title>
       Tab Two
     </ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content>
-  <div id="map_canvas">
+  <div id='map_canvas'>
+  </div>
+  <div style="top: 10%;position: relative;" *ngIf="reservado">
+    <ion-row>
+      <ion-col text-right>
+        <ion-button (click)="estoyEstacionado()" shape="round" color="secondary">ya llegu&eacute; </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-right>
+        <ion-button (click)="cancelarParking()" shape="round" color="secondary">atr&aacute;s</ion-button>
+      </ion-col>
+    </ion-row>
   </div>
 
+  <ion-fab *ngIf="reservado" horizontal="end" vertical="bottom" slot="fixed">
+    <!-- <ion-badge id="cart-badge" color="danger">&nbsp;</ion-badge> -->
+    <ion-fab-button id="cart-btn" color="secondary">
+      <!-- <ion-badge id="cart-badge"></ion-badge> -->
+      <ion-icon name="arrow-dropup">
+      </ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="light" (click)="showHideDir()">
+        <ion-icon name="map"></ion-icon>
+      </ion-fab-button>
+      <ion-label>Detalles</ion-label>
+      <ion-fab-button color="light" (click)="showHideInstruccionsDir()">
+        <ion-icon name="compass"></ion-icon>
+      </ion-fab-button>
+      <ion-label>¿C&oacute;mo llegar?</ion-label>
+    </ion-fab-list>
+  </ion-fab>
+
+
+
 </ion-content>
-<ion-footer *ngIf="pinEnable" style="padding: 5%;">
-  <ion-toolbar>
-    <!-- <ion-title>Footer</ion-title> -->
+
+<ion-footer *ngIf="footerEnable">
+  <ion-toolbar *ngIf="dirEnable||!reservado" style="padding:5%;">
     <ion-row>
       <ion-col>
-        <ion-label style="font-size:0.8rem;">NUMERO</ion-label><br>
+        <ion-label style="font-size:0.8rem;">N&Uacute;MERO</ion-label><br>
         <ion-label>
           <strong>{{propiedadesObject.id}}</strong>
         </ion-label>
@@ -28,7 +61,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-label style="font-size:0.8rem;">DIRECCION</ion-label><br>
+        <ion-label style="font-size:0.8rem;">DIRECCI&Oacute;N</ion-label><br>
         <ion-label>
           <strong>{{propiedadesObject.calle}}</strong>
         </ion-label>
@@ -50,11 +83,12 @@
         <ion-label><strong>100 m</strong></ion-label>
       </ion-col>
     </ion-row>
-    <br>
-    <ion-row>
-      <ion-col text-center>
-        <ion-button shape="round" color="secondary">reservar</ion-button>
-      </ion-col>
-    </ion-row>
   </ion-toolbar>
+
+  <ion-row *ngIf="!reservado" style="padding-bottom: 2%;">
+    <ion-col text-center>
+      <ion-button shape="round" color="secondary" (click)="gotoReservar()">Ver ruta</ion-button>
+    </ion-col>
+  </ion-row>
+
 </ion-footer>
