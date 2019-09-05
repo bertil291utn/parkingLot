@@ -9,36 +9,45 @@
 <ion-content>
   <div id='map_canvas'>
   </div>
-  <div style="top: 10%;position: relative;" *ngIf="reservado">
+  <div style="top: 5%;left: 2%;position: relative;" *ngIf="reservado">
+
     <ion-row>
-      <ion-col text-right>
-        <ion-button (click)="estoyEstacionado()" shape="round" color="secondary">ya llegu&eacute; </ion-button>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col text-right>
-        <ion-button (click)="cancelarParking()" shape="round" color="secondary">atr&aacute;s</ion-button>
+      <ion-col text-left>
+        <ion-icon name="arrow-back" color="primary" (click)="cancelarParking()" style="font-size: 2rem;"></ion-icon>
+        <!-- <ion-button (click)="cancelarParking()" fill="outline" color="secondary">
+        </ion-button> -->
       </ion-col>
     </ion-row>
   </div>
 
+  <ion-item color="secondary" style="top: 5%;" *ngIf="!reservado">
+    <!-- <ion-label>Notifications</ion-label> -->
+    <ion-select [(ngModel)]="tipoAutomovil" interface="action-sheet" placeholder="Seleccione un elemento"
+      (ionChange)="changeState()">
+      <ion-select-option value="1" selected="true">Automovil</ion-select-option>
+      <ion-select-option value="3">Motocicleta</ion-select-option>
+      <ion-select-option value="2">Especial</ion-select-option>
+    </ion-select>
+  </ion-item>
+
   <ion-fab *ngIf="reservado" horizontal="end" vertical="bottom" slot="fixed">
-    <!-- <ion-badge id="cart-badge" color="danger">&nbsp;</ion-badge> -->
-    <ion-fab-button id="cart-btn" color="secondary">
-      <!-- <ion-badge id="cart-badge"></ion-badge> -->
+    <ion-fab-button color="secondary" (click)="showHideInstruccionsDir()">
+      <ion-icon name="compass"></ion-icon>
+    </ion-fab-button>
+    <!-- <ion-fab-button id="cart-btn" color="secondary">
       <ion-icon name="arrow-dropup">
       </ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button color="light" (click)="showHideDir()">
+    </ion-fab-button> -->
+    <!-- <ion-fab-list side="top"> -->
+    <!-- <ion-fab-button color="light" (click)="showHideDir()">
         <ion-icon name="map"></ion-icon>
       </ion-fab-button>
-      <ion-label>Detalles</ion-label>
-      <ion-fab-button color="light" (click)="showHideInstruccionsDir()">
+      <ion-label>Detalles</ion-label> -->
+    <!-- <ion-fab-button color="light" (click)="showHideInstruccionsDir()">
         <ion-icon name="compass"></ion-icon>
       </ion-fab-button>
       <ion-label>¿C&oacute;mo llegar?</ion-label>
-    </ion-fab-list>
+    </ion-fab-list> -->
   </ion-fab>
 
 
@@ -51,36 +60,39 @@
       <ion-col>
         <ion-label style="font-size:0.8rem;">N&Uacute;MERO</ion-label><br>
         <ion-label>
-          <strong>{{propiedadesObject.id}}</strong>
+          <strong>{{propiedadesObject.adicional.id}}</strong>
         </ion-label>
       </ion-col>
       <ion-col>
         <ion-label style="font-size:0.8rem;">TIPO</ion-label><br>
-        <ion-label><strong>{{propiedadesObject.tipo|titlecase}}</strong></ion-label>
+        <ion-label><strong>{{propiedadesObject.adicional.tipo|titlecase}}</strong></ion-label>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-label style="font-size:0.8rem;">DIRECCI&Oacute;N</ion-label><br>
         <ion-label>
-          <strong>{{propiedadesObject.calle}}</strong>
+          <strong>{{propiedadesObject.adicional.calle}}</strong>
         </ion-label>
       </ion-col>
       <ion-col>
         <ion-label style="font-size:0.8rem;">REFERENCIA</ion-label><br>
         <ion-label>
-          <strong>{{propiedadesObject.referencia}}</strong>
+          <strong>{{propiedadesObject.adicional.referencia}}</strong>
         </ion-label>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-label style="font-size:0.8rem;">TIEMPO A LLEGAR</ion-label><br>
-        <ion-label><strong>30 s</strong></ion-label>
+        <ion-label *ngIf="propiedadesObject.navegacion.duration!=null">
+          <strong>{{sectoMin(propiedadesObject.navegacion.duration)}}</strong></ion-label>
       </ion-col>
       <ion-col>
         <ion-label style="font-size:0.8rem;">DISTANCIA</ion-label><br>
-        <ion-label><strong>100 m</strong></ion-label>
+        <ion-label *ngIf="propiedadesObject.navegacion.distance!=null">
+          <strong>{{propiedadesObject.navegacion.distance}}
+            m</strong></ion-label>
       </ion-col>
     </ion-row>
   </ion-toolbar>
@@ -88,6 +100,11 @@
   <ion-row *ngIf="!reservado" style="padding-bottom: 2%;">
     <ion-col text-center>
       <ion-button shape="round" color="secondary" (click)="gotoReservar()">Ver ruta</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="reservado" style="padding-bottom: 2%;">
+    <ion-col text-center>
+      <ion-button (click)="estoyEstacionado()" shape="round" color="secondary">ya llegu&eacute; </ion-button>
     </ion-col>
   </ion-row>
 
