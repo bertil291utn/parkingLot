@@ -13,7 +13,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     FormsModule,
     RouterModule.forChild([{ path: '', component: Tab2Page }])
   ],
-  providers: [Geolocation,TitleCasePipe],
+  providers: [Geolocation, TitleCasePipe],
   declarations: [Tab2Page]
 })
 export class Tab2PageModule { }

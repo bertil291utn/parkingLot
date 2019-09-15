@@ -6,6 +6,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { TitleCasePipe, NgSwitchCase } from '@angular/common';
 import * as $ from "jquery";
+import { ApirestserviceService } from '../services/apirestservice.service';
 
 @Component({
   selector: 'app-tab2',
@@ -26,9 +27,11 @@ export class Tab2Page {
   directions;//var para la direciones y rutas
   geojsonaux;//valor global auxiliar para pintar en 
   tipoAutomovil = "1";
+  geolocate; //boton azul de ubicacion 
+  brujula;//boton de burjula pararegresar a laroeientaicon original al mapa
 
   constructor(private geolocation: Geolocation, public loadingController: LoadingController, private titlecasePipe: TitleCasePipe
-    , public toastController: ToastController) {
+    , public toastController: ToastController, public apirestservice: ApirestserviceService) {
 
 
   }
@@ -61,32 +64,19 @@ export class Tab2Page {
     // .setLngLat(center)
     // .addTo(map);
     //iniciar varible para geolocate, para qe se pisible anadir metodos cmo trigger
-    let geolocate = new mapboxgl.GeolocateControl({
-      positionOptions: {
-        enableHighAccuracy: true
-      },
-      trackUserLocation: false
-      // showUserLocation: true
-    });
+    this.addGeolocateControl();
 
-    // this.map.setMaxBounds([[-78.144964, 0.045236], [-78.140888, 0.038061]]);
-    this.map.addControl(geolocate);//anadir boton de ubicacion punto azul
-    //no mostrar el boton de geolocate
-    let instructions = document.getElementsByClassName("mapboxgl-ctrl");
-    instructions[0]['style'].display = 'none';
-    //anadir la brujula en el mapa para reotientar el mapa
-    var nav = new mapboxgl.NavigationControl({ showZoom: false });
-    this.map.addControl(nav, 'top-right');
+
     //esconder logo de mapbox
     let mapboxTag = document.getElementsByClassName("mapboxgl-ctrl-bottom-left");
     mapboxTag[0]['style'].display = 'none';
 
 
-    this.map.on('load', () => {
+    this.map.on('load', async () => {
       // this.asignarObjetoGeoJson();
-      this.anadirLayerParking();
-      geolocate.trigger();//quitar comnentario
+      await this.anadirLayerParking();
       this.loadingMap.dismiss();
+      this.geolocate.trigger();//quitar comnentario
     });//
 
 
@@ -99,7 +89,9 @@ export class Tab2Page {
       message: 'Map loading...'
     });
     await this.loadingParkingLayer.present();
-    this.addLayer();
+    this.addGeolocateControl();
+    await this.anadirLayerParking();
+    this.geolocate.trigger();//lanzar ubicacion actual
     this.directions.removeRoutes();//remover las rutas
     document.getElementsByClassName("directions-control-instructions").item(0).remove();// remover as insutrcciones
     this.reservado = false//cambiar el estado de reservado
@@ -109,6 +101,8 @@ export class Tab2Page {
     //cuando el zona azul pone estacionado directamente no hay necesidad de comprobacion 
     let mensaje = 'Usted se encuentra estacionado en el parking No. ' + this.propiedadesObject.adicional.id;
     this.actionPresentToast(mensaje, 4000);
+
+    
     // if (this.map.getLayer('parking'))
     //   if (this.loadingParkingLayer != null || undefined) {
     //     console.log('usted se ha estacionado');
@@ -122,12 +116,15 @@ export class Tab2Page {
       message: 'Map loading...'
     });
     await this.loadingParkingLayer.present();
-    this.addLayer();
+    //this.addLayer();
+    this.addGeolocateControl();
+    await this.anadirLayerParking();
     this.directions.removeRoutes();//remover las rutas
     document.getElementsByClassName("directions-control-instructions").item(0).remove();// remover as insutrcciones
     // this.map.removeControl(this.directions);//remover la capa de controles
     this.reservado = false//cambiar el estado de reservado
     this.footerEnable = false;//y deshabiliatr el footer
+    this.geolocate.trigger();//quitar comnentario
     // console.log('out getlayer');
     // console.log('this.map.getLayer()',this.map.getLayer('parking'));
     // if (this.map.getLayer('parking')) {
@@ -150,6 +147,9 @@ export class Tab2Page {
     //remover la capa de dibujado de parkings
     this.map.removeLayer('parking');
     this.map.removeSource('tilequery');
+    //quitar boton azul de ubicacion y brujula
+    this.map.removeControl(this.geolocate);
+    this.map.removeControl(this.brujula);
     this.markerParking.remove();//remover el marker 
     const myLatLng = await this.getLocation();
     let center = { lon: myLatLng.lng, lat: myLatLng.lat };
@@ -253,7 +253,7 @@ export class Tab2Page {
     var query = `https://wsparking.herokuapp.com/nearby_parking?lon=${myLatLng.lng}&lat=${myLatLng.lat}&tipo=${+this.tipoAutomovil}`;
     await $.ajax({
       method: 'GET',
-      url: query,
+      url: query
     }).done((data) => {
       // console.log('query httpparking: ', data);
       this.geojsonaux = data;
@@ -261,14 +261,42 @@ export class Tab2Page {
       // this.geojson = data;
       // Code from the next step will go here
     })
+
+
+
+    //   this.geojsonaux =
+    //     await this.apirestservice.nearbySearch(myLatLng.lng, myLatLng.lat, +this.tipoAutomovil).then((resp) => {
+
+    //       console.log('query httpparking: ', resp);
+    //     });
+    //   console.log('query httpparking: ', this.geojsonaux);
   }
 
-  public changeState() {
+  public async changeState() {
     // this.selectParkingaAs(this.tipoAutomovil);
     this.map.removeLayer('parking');
     this.map.removeSource('tilequery');
-    this.anadirLayerParking();
+    this.map.removeControl(this.geolocate);
+    this.map.removeControl(this.brujula);
+    this.addGeolocateControl();
+    await this.anadirLayerParking();
+    this.geolocate.trigger();//quitar comnentario
+  }
 
+  private addGeolocateControl() {
+    this.geolocate = new mapboxgl.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true
+      },
+      trackUserLocation: true //para que que el bton azul cambie cuando se mueva
+    });
+    this.map.addControl(this.geolocate);
+    // let instructions = document.getElementsByClassName("mapboxgl-ctrl");
+    // instructions[0]['style'].display = 'none';
+
+    //anadir la brujula en el mapa para reotientar el mapa
+    this.brujula = new mapboxgl.NavigationControl({ showZoom: false });
+    this.map.addControl(this.brujula, 'top-right');
   }
 
   private async httpDistanceReq() {
