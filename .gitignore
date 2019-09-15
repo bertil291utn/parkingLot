@@ -25,6 +25,7 @@ node_modules/
 tmp/
 temp/
 platforms/
+!platforms/android/app/src/main/res/xml/network_security_config.xml
 plugins/
 plugins/android.json
 plugins/ios.json

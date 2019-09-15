@@ -6,9 +6,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { TitleCasePipe, NgSwitchCase } from '@angular/common';
 import * as $ from "jquery";
-import { iif } from 'rxjs';
 
-declare var geojsonhint;
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -27,13 +25,15 @@ export class Tab2Page {
   dirEnable: boolean = true;//activar o desactivar el view de la direccion, inicia mostrando
   directions;//var para la direciones y rutas
   geojsonaux;//valor global auxiliar para pintar en 
-  tipoAutomovil: number = 1;
+  tipoAutomovil = "1";
 
   constructor(private geolocation: Geolocation, public loadingController: LoadingController, private titlecasePipe: TitleCasePipe
-    , public toastController: ToastController) { }
+    , public toastController: ToastController) {
+
+
+  }
 
   ngOnInit() {
-
     this.initMapBox();
   }
 
@@ -244,19 +244,20 @@ export class Tab2Page {
 
   private async  httpTitleReqParking() {
     //obtiene los lugares mas cercanos de acuerdo a un radio dado estblecido junto asu ubicacion actual 
-    var tileset = 'barto380.71fbj6ni'; // replace this with the ID of the tileset you created//esta direccion tarrer desde una bd mediante api rest
-    var radius = 500; // 1609 meters is roughly equal to one mile
-    var limit = 20; // The maximu
+    // var tileset = 'barto380.71fbj6ni'; // replace this with the ID of the tileset you created//esta direccion tarrer desde una bd mediante api rest
+    // var radius = 500; // 1609 meters is roughly equal to one mile
+    // var limit = 20; // The maximu
     const myLatLng = await this.getLocation();
 
-    var query = 'https://api.mapbox.com/v4/' + tileset + '/tilequery/' + myLatLng.lng + ',' + myLatLng.lat + '.json?radius=' + radius + '&limit=' + limit + '&access_token=' + this.accessToken;
+    // var query = 'https://api.mapbox.com/v4/' + tileset + '/tilequery/' + myLatLng.lng + ',' + myLatLng.lat + '.json?radius=' + radius + '&limit=' + limit + '&access_token=' + this.accessToken;
+    var query = `https://wsparking.herokuapp.com/nearby_parking?lon=${myLatLng.lng}&lat=${myLatLng.lat}&tipo=${+this.tipoAutomovil}`;
     await $.ajax({
       method: 'GET',
       url: query,
     }).done((data) => {
       // console.log('query httpparking: ', data);
       this.geojsonaux = data;
-      this.selectParkingaAs(+this.tipoAutomovil);
+      // this.selectParkingaAs(+this.tipoAutomovil);
       // this.geojson = data;
       // Code from the next step will go here
     })
@@ -275,12 +276,12 @@ export class Tab2Page {
     const myLatLng = await this.getLocation();
     let puntos = myLatLng.lng + ',' + myLatLng.lat + ';';//incluido ubicaciojn actual como primer parametro
     let npuntos = '';
-    this.geojsonaux.forEach(function (element, idx, array) {
+    this.geojsonaux.forEach((element, idx, array) => {
       let semicolon = ';';
       if (idx === array.length - 1) {//the last item in the array
         semicolon = '';
       }
-      puntos += element.properties.longitude + ',' + element.properties.latitude + semicolon;
+      puntos += element.lon + ',' + element.lat + semicolon;
       npuntos += (idx + 1) + semicolon;
     });
     // console.log('puntos: ', puntos);
@@ -290,7 +291,7 @@ export class Tab2Page {
       method: 'GET',
       url: query,
     }).done((data) => {
-      console.log('query httprepondse: ', data);
+      // console.log('query httprepondse: ', data);
       this.bestLocationParking(data.distances[0]);//del arrya d edistancias buscar los dos que sean mas cercanos
       // this.geojson = data;
       // console.log('thisgeojson: ', this.geojson);
@@ -323,7 +324,7 @@ export class Tab2Page {
           keyLocationArray.push(index);
       });
     }
-    console.log('keyLocationArray: ',keyLocationArray);
+    // console.log('keyLocationArray: ', keyLocationArray);
     let featuresArray = [];
     keyLocationArray.forEach((valKey) => {
       this.geojsonaux.forEach((valgeojson, index) => {//buscar en el array de features(geojson auxiliar) los indices desde el arrya keylocationarray 
@@ -331,9 +332,10 @@ export class Tab2Page {
           featuresArray.push(valgeojson);//si es que es igual al encontrado anadir el objeto de en el variable de features
       });
     });
-    this.geojson.features = featuresArray; //aandir el array de features en el campo features del obejto geojson, para posteriormente manda r a dibujar solo este obejto 
+    this.geojsonaux = featuresArray; //aandir el array de features en el campo features del obejto geojson, para posteriormente manda r a dibujar solo este obejto 
+    this.asignarObjetoGeoJson();
     // console.log('key location : ', keyLocationArray);
-    // console.log('geojson : ', this.geojson);
+    // console.log('geojson : ', this.geojsonaux);
   }
 
 
@@ -372,10 +374,10 @@ export class Tab2Page {
         },
         "circle-color": [
           'match',
-          ['get', 'tipo'],
-          'automovil', '#FF8C00',
-          'motocicleta', '#9ACD32',
-          'especial', '#008000',
+          ['get', 'id_tipo'],
+          '1', '#FF8C00',
+          '3', '#9ACD32',
+          '2', '#008000',
           '#FF0000'
         ]
       }
@@ -414,26 +416,26 @@ export class Tab2Page {
 
   }
 
-  // private asignarObjetoGeoJson() {
-  //   let featuresArray = [];
-  //   this.parkingLot().forEach((obj) => {
-  //     let features = {//creacion de objeto features 
-  //       id: null,
-  //       type: "Feature",
-  //       properties: null,
-  //       geometry: {
-  //         type: "Point",
-  //         coordinates: null
-  //       },
-  //     };//objeto de feature elaborar un array de este objeto para asignar al parametro de features en la variable geojson
-  //     features.properties = obj;
-  //     features.id = obj.id;
-  //     features.geometry.coordinates = [obj.ubicacion.lon, obj.ubicacion.lat];
-  //     featuresArray.push(features);//add a un array
-  //   });
-  //   this.geojson.features = featuresArray;//anadir el array de features en el campo fetures del objeto geojson
-
-  // }
+  private asignarObjetoGeoJson() {
+    let featuresArray = [];
+    this.geojsonaux.forEach((obj) => {
+      let features = {//creacion de objeto features 
+        id: null,
+        type: "Feature",
+        properties: null,
+        geometry: {
+          type: "Point",
+          coordinates: null
+        },
+      };//objeto de feature elaborar un array de este objeto para asignar al parametro de features en la variable geojson
+      features.properties = obj;
+      features.id = +obj.id;
+      features.geometry.coordinates = [+obj.lon, +obj.lat];
+      featuresArray.push(features);//add a un array
+    });
+    this.geojson.features = featuresArray;//anadir el array de features en el campo fetures del objeto geojson
+    // console.log('geojson: ' + this.geojson);
+  }
 
   geojson = {//estrucura de objeto geojson anadir un layer
     type: "FeatureCollection",
