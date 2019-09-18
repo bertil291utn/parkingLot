@@ -19,36 +19,42 @@
       </ion-col>
     </ion-row>
   </div>
-
+  <!-- 
   <ion-item color="secondary" style="top: 5%;" *ngIf="!reservado">
-    <!-- <ion-label>Notifications</ion-label> -->
     <ion-select [(ngModel)]="tipoAutomovil" interface="action-sheet" placeholder="Seleccione un elemento"
       (ionChange)="changeState()">
       <ion-select-option value="1">Automovil</ion-select-option>
       <ion-select-option value="3">Motocicleta</ion-select-option>
       <ion-select-option value="2">Especial</ion-select-option>
     </ion-select>
-  </ion-item>
+  </ion-item> -->
 
-  <ion-fab *ngIf="reservado" horizontal="end" vertical="bottom" slot="fixed">
-    <ion-fab-button color="secondary" (click)="showHideInstruccionsDir()">
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button *ngIf="reservado" color="secondary" (click)="showHideInstruccionsDir()">
       <ion-icon name="compass"></ion-icon>
     </ion-fab-button>
-    <!-- <ion-fab-button id="cart-btn" color="secondary">
+    <ion-fab-button *ngIf="!reservado" id="cart-btn" color="secondary">
       <ion-icon name="arrow-dropup">
       </ion-icon>
-    </ion-fab-button> -->
-    <!-- <ion-fab-list side="top"> -->
-    <!-- <ion-fab-button color="light" (click)="showHideDir()">
-        <ion-icon name="map"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list *ngIf="!reservado" side="top">
+      <ion-fab-button color="light">
+        <ion-icon style="font-size: 2.5rem;" (click)="changeState(2)" src="assets/parkingicons/special.svg"></ion-icon>
       </ion-fab-button>
-      <ion-label>Detalles</ion-label> -->
-    <!-- <ion-fab-button color="light" (click)="showHideInstruccionsDir()">
-        <ion-icon name="compass"></ion-icon>
+      <!-- <ion-label>Detalles</ion-label> -->
+      <ion-fab-button color="light">
+        <ion-icon style="font-size: 2.5rem;" (click)="changeState(3)" src="assets/parkingicons/motorbike.svg">
+        </ion-icon>
       </ion-fab-button>
-      <ion-label>¿C&oacute;mo llegar?</ion-label>
-    </ion-fab-list> -->
+      <ion-fab-button color="light">
+        <ion-icon style="font-size: 2.5rem;" (click)="changeState(1)" src="assets/parkingicons/car.svg"></ion-icon>
+      </ion-fab-button>
+      <!-- <ion-label>¿C&oacute;mo llegar?</ion-label> -->
+    </ion-fab-list>
   </ion-fab>
+
+
+
 
 
 

@@ -26,9 +26,10 @@ export class Tab2Page {
   dirEnable: boolean = true;//activar o desactivar el view de la direccion, inicia mostrando
   directions;//var para la direciones y rutas
   geojsonaux;//valor global auxiliar para pintar en 
-  tipoAutomovil = "1";
+  tipoAutomovil = 0;
   geolocate; //boton azul de ubicacion 
   brujula;//boton de burjula pararegresar a laroeientaicon original al mapa
+  currentMarkers = [];//tods los marcadores que sestan en el mapa (autmo,moto,especial)
 
   constructor(private geolocation: Geolocation, public loadingController: LoadingController, private titlecasePipe: TitleCasePipe
     , public toastController: ToastController, public apirestservice: ApirestserviceService) {
@@ -80,7 +81,7 @@ export class Tab2Page {
     });//
 
 
-    this.viewFooter();//mostrar footer con valores
+    // this.viewFooter();//mostrar footer con valores
 
   }//initmapbox
 
@@ -102,7 +103,7 @@ export class Tab2Page {
     let mensaje = 'Usted se encuentra estacionado en el parking No. ' + this.propiedadesObject.adicional.id;
     this.actionPresentToast(mensaje, 4000);
 
-    
+
     // if (this.map.getLayer('parking'))
     //   if (this.loadingParkingLayer != null || undefined) {
     //     console.log('usted se ha estacionado');
@@ -145,12 +146,12 @@ export class Tab2Page {
     this.reservado = true;//cambiar el estado a reervado
     //remover la fuente de datos de parking
     //remover la capa de dibujado de parkings
-    this.map.removeLayer('parking');
-    this.map.removeSource('tilequery');
+    // this.map.removeLayer('parking');
+    // this.map.removeSource('tilequery');
     //quitar boton azul de ubicacion y brujula
+    // this.markerParking.remove();//remover el marker 
     this.map.removeControl(this.geolocate);
     this.map.removeControl(this.brujula);
-    this.markerParking.remove();//remover el marker 
     const myLatLng = await this.getLocation();
     let center = { lon: myLatLng.lng, lat: myLatLng.lat };
 
@@ -208,6 +209,7 @@ export class Tab2Page {
 
     //cuando presiona en el layer del parking 
     //enviar val propiedadesobject para mostra en el footer y anadir el marker
+
     this.map.on('click', 'parking', (e) => {
       this.propiedadesObject = { navegacion: { duration: null, distance: null }, adicional: null }
       var coordinates = e.features[0].geometry.coordinates.slice();
@@ -250,7 +252,10 @@ export class Tab2Page {
     const myLatLng = await this.getLocation();
 
     // var query = 'https://api.mapbox.com/v4/' + tileset + '/tilequery/' + myLatLng.lng + ',' + myLatLng.lat + '.json?radius=' + radius + '&limit=' + limit + '&access_token=' + this.accessToken;
-    var query = `https://wsparking.herokuapp.com/nearby_parking?lon=${myLatLng.lng}&lat=${myLatLng.lat}&tipo=${+this.tipoAutomovil}`;
+    //1000 en limite para que no haya limite. Este es usado para el metodo de los dos parkings mas cercanos para que traiga solo los 10 primeros registros
+    //m_around metros a la redonda 100m de radio 
+    var query = `https://wsparking.herokuapp.com/nearby_parking?lon=${myLatLng.lng}&lat=${myLatLng.lat}&tipo=${this.tipoAutomovil}&m_around=100&limite=1000`;
+    // var query = 'https://wsparking.herokuapp.com/parqueaderos/';
     await $.ajax({
       method: 'GET',
       url: query
@@ -272,18 +277,22 @@ export class Tab2Page {
     //   console.log('query httpparking: ', this.geojsonaux);
   }
 
-  public async changeState() {
+  public async changeState(estado) {
     // this.selectParkingaAs(this.tipoAutomovil);
-    this.map.removeLayer('parking');
-    this.map.removeSource('tilequery');
-    this.map.removeControl(this.geolocate);
-    this.map.removeControl(this.brujula);
-    this.addGeolocateControl();
+    //remover todos los datos  del mapa
+    // this.map.removeLayer('parking');
+    // this.map.removeSource('tilequery');
+    this.tipoAutomovil = estado;
+    this.removeallMarker(this.currentMarkers);
+    this.map.removeControl(this.geolocate);//ubicacion boton azul
+    this.map.removeControl(this.brujula);//
+    this.addGeolocateControl();//anadir el vento 
     await this.anadirLayerParking();
-    this.geolocate.trigger();//quitar comnentario
+    this.geolocate.trigger();
   }
 
   private addGeolocateControl() {
+    //anadir el control de ubicacion actial al mapa
     this.geolocate = new mapboxgl.GeolocateControl({
       positionOptions: {
         enableHighAccuracy: true
@@ -309,7 +318,7 @@ export class Tab2Page {
       if (idx === array.length - 1) {//the last item in the array
         semicolon = '';
       }
-      puntos += element.lon + ',' + element.lat + semicolon;
+      puntos += element.longitude + ',' + element.latitude + semicolon;
       npuntos += (idx + 1) + semicolon;
     });
     // console.log('puntos: ', puntos);
@@ -370,9 +379,71 @@ export class Tab2Page {
 
   private async anadirLayerParking() {
     await this.httpTitleReqParking();
-    await this.httpDistanceReq();
+    this.asignarObjetoGeoJson();
+    // await this.httpDistanceReq();
 
-    this.addLayer();//crear el layer en el mapa
+    // this.addLayer();//crear el layer en el mapa
+    this.addcustomMarkers();
+  }
+
+  private addcustomMarkers() {
+    // console.log('geosjo: ', this.geojson);
+
+    this.geojson.features.forEach((marker) => {
+
+      // create a DOM element for the marker
+      let el = document.createElement('img');
+      el.className = 'marker';
+      let tipo = '';
+      if (marker.properties.id_tipo == 1)
+        tipo = 'car.png';
+      else if (marker.properties.id_tipo == 2)
+        tipo = 'special.png';
+      else
+        tipo = 'motorbike.png';
+      // el.style.backgroundImage = 'url(./../assets/parkingicons/' + tipo + ')';
+      el.src = 'assets/parkingicons/' + tipo;
+      el.style.width = '40px';
+      el.style.height = '40px';
+      // add marker temp to map
+      var oneMarker = new mapboxgl.Marker(el)
+        .setLngLat(marker.geometry.coordinates)
+        .addTo(this.map);
+      // save tmp marker into currentMarkers
+      this.currentMarkers.push(oneMarker);
+
+
+      el.addEventListener('click', () => {
+        // remove markers 
+        this.removeallMarker(this.currentMarkers);
+        this.propiedadesObject = { navegacion: { duration: null, distance: null }, adicional: null }
+        // console.log('marker object: ', marker);
+        var coordinates = marker.geometry.coordinates.slice();
+        this.destinoParking = coordinates;
+        this.propiedadesObject.adicional = marker.properties;
+        // this.markerParking.setLngLat(coordinates)
+        //   .addTo(this.map);
+        this.footerEnable = true;
+        this.gotoReservar();//al momento de dar click en el parking directamnte crear la ruta
+        // this.httpreqParking();
+      });
+    });
+    // console.log('currentmarker: ', currentMarkers);
+
+    //cuando el loadin parking se haya activado
+
+    if (this.loadingParkingLayer != null || undefined)
+      this.loadingParkingLayer.dismiss();
+  }
+
+  private removeallMarker(currentMarkers) {
+    // console.log('currrent markers', currentMarkers);
+    if (currentMarkers !== null) {
+      for (var i = 0; i < currentMarkers.length; i++) {
+        currentMarkers[i].remove();
+        // console.log('index', i);
+      }
+    }
   }
 
   private addLayer() {
@@ -458,11 +529,11 @@ export class Tab2Page {
       };//objeto de feature elaborar un array de este objeto para asignar al parametro de features en la variable geojson
       features.properties = obj;
       features.id = +obj.id;
-      features.geometry.coordinates = [+obj.lon, +obj.lat];
+      features.geometry.coordinates = [+obj.longitude, +obj.latitude];
       featuresArray.push(features);//add a un array
     });
     this.geojson.features = featuresArray;//anadir el array de features en el campo fetures del objeto geojson
-    // console.log('geojson: ' + this.geojson);
+    // console.log('geojson: ' ,this.geojson);
   }
 
   geojson = {//estrucura de objeto geojson anadir un layer
