@@ -256,16 +256,20 @@ export class Tab2Page {
     //m_around metros a la redonda 100m de radio 
     var query = `https://wsparking.herokuapp.com/nearby_parking?lon=${myLatLng.lng}&lat=${myLatLng.lat}&tipo=${this.tipoAutomovil}&m_around=100&limite=1000`;
     // var query = 'https://wsparking.herokuapp.com/parqueaderos/';
-    await $.ajax({
-      method: 'GET',
-      url: query
-    }).done((data) => {
-      // console.log('query httpparking: ', data);
-      this.geojsonaux = data;
-      // this.selectParkingaAs(+this.tipoAutomovil);
-      // this.geojson = data;
-      // Code from the next step will go here
-    })
+    let response = await fetch(query);
+    this.geojsonaux = await response.json();
+
+
+    // await $.ajax({
+    //   method: 'GET',
+    //   url: query
+    // }).done((data) => {
+    //   // console.log('query httpparking: ', data);
+    //   this.geojsonaux = data;
+    //   // this.selectParkingaAs(+this.tipoAutomovil);
+    //   // this.geojson = data;
+    //   // Code from the next step will go here
+    // })
 
 
 
@@ -324,16 +328,21 @@ export class Tab2Page {
     // console.log('puntos: ', puntos);
     // console.log('npuntos: ', npuntos);
     var query = `https://api.mapbox.com/directions-matrix/v1/mapbox/driving/${puntos}?sources=0&destinations=${npuntos}&annotations=duration,distance&access_token=` + this.accessToken;
-    await $.ajax({
-      method: 'GET',
-      url: query,
-    }).done((data) => {
-      // console.log('query httprepondse: ', data);
-      this.bestLocationParking(data.distances[0]);//del arrya d edistancias buscar los dos que sean mas cercanos
-      // this.geojson = data;
-      // console.log('thisgeojson: ', this.geojson);
-      // Code from the next step will go here
-    })
+    
+    let response = await fetch(query);
+    let data = await response.json();
+    this.bestLocationParking(data.distances[0]);
+
+    // await $.ajax({
+    //   method: 'GET',
+    //   url: query,
+    // }).done((data) => {
+    //   // console.log('query httprepondse: ', data);
+    //   this.bestLocationParking(data.distances[0]);//del arrya d edistancias buscar los dos que sean mas cercanos
+    //   // this.geojson = data;
+    //   // console.log('thisgeojson: ', this.geojson);
+    //   // Code from the next step will go here
+    // })
 
   }
 
