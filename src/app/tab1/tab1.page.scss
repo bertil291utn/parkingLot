@@ -2,3 +2,25 @@
   max-height: 35vh;
   overflow: hidden;
 }
+.avatar {
+  border-radius: 10%;
+  height: 9rem;
+  width: 9rem;
+}
+p {
+  margin: 0px;
+  color: rgb(102, 102, 102);
+  font-weight: bold;
+}
+
+.custom-skeleton ion-skeleton-text {
+  line-height: 13px;
+}
+
+.custom-skeleton ion-skeleton-text:last-child {
+  margin-bottom: 5px;
+}
+
+ion-content {
+  --background: #f4f4f7;
+}

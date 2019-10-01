@@ -1,1 +1,45 @@
+ion-content {
+  --background: #f4f4f7;
+}
 
+.no-click {
+  pointer-events: none;
+}
+
+ion-note {
+  font-size: 12px;
+  align-self: flex-start;
+  margin-top: 14px;
+}
+ion-list {
+  padding: 0px;
+}
+
+ion-list-header {
+  background-color: #f4f5f8;
+}
+
+ion-col {
+  padding: 0px;
+}
+
+.custom-skeleton ion-skeleton-text {
+  line-height: 15px;
+}
+
+ion-col >p >ion-skeleton-text {
+  width: 50%;
+  left: 50%;
+}
+ion-col >ion-note >ion-skeleton-text {
+  width: 50%;
+  left: 50%;
+}
+ion-col >h4 >ion-skeleton-text {
+  width: 50%;
+  left: 50%;
+}
+
+// .custom-skeleton ion-skeleton-text:last-child {
+//   margin-bottom: 5px;
+// }

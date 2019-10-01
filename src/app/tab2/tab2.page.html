@@ -1,39 +1,24 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Tab Two
-    </ion-title>
-  </ion-toolbar>
-</ion-header> -->
-
 <ion-content>
   <div id='map_canvas'>
   </div>
-  <div style="top: 5%;left: 2%;position: relative;" *ngIf="reservado">
+  <ion-button style="top: 15%; position: relative; float: right;" color="light" *ngIf="!reservado" (click)="refresh()">
+    <ion-icon name="refresh"></ion-icon>
+  </ion-button>
 
+
+  <div style="top: 5%;left: 2%;position: relative;" *ngIf="reservado">
     <ion-row>
-      <ion-col text-left>
-        <ion-icon name="arrow-back" color="primary" (click)="cancelarParking()" style="font-size: 2rem;"></ion-icon>
-        <!-- <ion-button (click)="cancelarParking()" fill="outline" color="secondary">
-        </ion-button> -->
+      <ion-col text-left size="1.5" (click)="cancelarParking()">
+        <ion-icon name="arrow-back" color="primary" style="font-size: 2.5rem;"></ion-icon>
       </ion-col>
     </ion-row>
   </div>
-  <!-- 
-  <ion-item color="secondary" style="top: 5%;" *ngIf="!reservado">
-    <ion-select [(ngModel)]="tipoAutomovil" interface="action-sheet" placeholder="Seleccione un elemento"
-      (ionChange)="changeState()">
-      <ion-select-option value="1">Automovil</ion-select-option>
-      <ion-select-option value="3">Motocicleta</ion-select-option>
-      <ion-select-option value="2">Especial</ion-select-option>
-    </ion-select>
-  </ion-item> -->
 
   <ion-fab horizontal="end" vertical="bottom" slot="fixed">
-    <ion-fab-button *ngIf="reservado" color="secondary" (click)="showHideInstruccionsDir()">
+    <ion-fab-button *ngIf="reservado" color="light" (click)="showHideInstruccionsDir()">
       <ion-icon name="compass"></ion-icon>
     </ion-fab-button>
-    <ion-fab-button *ngIf="!reservado" id="cart-btn" color="secondary">
+    <ion-fab-button *ngIf="!reservado" id="cart-btn" color="light">
       <ion-icon name="arrow-dropup">
       </ion-icon>
     </ion-fab-button>
@@ -41,7 +26,6 @@
       <ion-fab-button color="light">
         <ion-icon style="font-size: 2.5rem;" (click)="changeState(2)" src="assets/parkingicons/special.svg"></ion-icon>
       </ion-fab-button>
-      <!-- <ion-label>Detalles</ion-label> -->
       <ion-fab-button color="light">
         <ion-icon style="font-size: 2.5rem;" (click)="changeState(3)" src="assets/parkingicons/motorbike.svg">
         </ion-icon>
@@ -49,15 +33,8 @@
       <ion-fab-button color="light">
         <ion-icon style="font-size: 2.5rem;" (click)="changeState(1)" src="assets/parkingicons/car.svg"></ion-icon>
       </ion-fab-button>
-      <!-- <ion-label>¿C&oacute;mo llegar?</ion-label> -->
     </ion-fab-list>
   </ion-fab>
-
-
-
-
-
-
 </ion-content>
 
 <ion-footer *ngIf="footerEnable">
@@ -103,14 +80,16 @@
     </ion-row>
   </ion-toolbar>
 
-  <ion-row *ngIf="!reservado" style="padding-bottom: 2%;">
+  <!-- <ion-row *ngIf="!reservado" style="padding-bottom: 2%;">
     <ion-col text-center>
       <ion-button shape="round" color="secondary" (click)="gotoReservar()">Ver ruta</ion-button>
     </ion-col>
-  </ion-row>
+  </ion-row> -->
   <ion-row *ngIf="reservado" style="padding-bottom: 2%;">
     <ion-col text-center>
-      <ion-button (click)="estoyEstacionado()" shape="round" color="secondary">ya llegu&eacute; </ion-button>
+      <ion-button style="margin: 0px 30%;" (click)="estoyEstacionado()" color="primary" expand="block" fill="outline">ya
+        llegu&eacute;
+      </ion-button>
     </ion-col>
   </ion-row>
 

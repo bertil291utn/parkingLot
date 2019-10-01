@@ -6,7 +6,22 @@ import { Component } from '@angular/core';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
+  data;
+  constructor() { }
 
-  constructor() {}
 
+  ionViewWillEnter() {
+    setTimeout(() => {
+      this.data = {
+        'heading': 'Normal text',
+        'para1': 'Lorem ipsum dolor sit amet, consectetur',
+        'para2': 'adipiscing elit.'
+      };
+    }, 3000);
+  }
+
+  goToRecargas() {
+
+    console.log('Ir a revisar todas las recargas realizsadas');
+  }
 }

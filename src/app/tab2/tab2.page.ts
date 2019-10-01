@@ -7,6 +7,7 @@ import { LoadingController, ToastController } from '@ionic/angular';
 import { TitleCasePipe, NgSwitchCase } from '@angular/common';
 import * as $ from "jquery";
 import { ApirestserviceService } from '../services/apirestservice.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-tab2',
@@ -14,7 +15,8 @@ import { ApirestserviceService } from '../services/apirestservice.service';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
-  accessToken: string = 'pk.eyJ1IjoiYmFydG8zODAiLCJhIjoiY2pzdjlub2NkMDRzdDN5bnp2N3Y0dnVmeCJ9.-9pWtrRt5xe5vVfXu6rQ3A';
+  // accessToken: string = process.env.API_KEY_MAP_BOX;
+  accessToken: string = environment.API_KEY_MAP_BOX;
   loadingMap;//loading controller mapa
   loadingParkingLayer;//loading layer cuand cancela o reserva una ruta ara qu vuelva a cargar
   footerEnable: boolean = false;
@@ -84,6 +86,18 @@ export class Tab2Page {
     // this.viewFooter();//mostrar footer con valores
 
   }//initmapbox
+
+
+  public async refresh() {
+    //refrescar las nuevas direcciones en caso de que la ubicaicon actual haya cambado
+    this.removeallMarker(this.currentMarkers);
+    this.map.removeControl(this.geolocate);//ubicacion boton azul
+    this.map.removeControl(this.brujula);//
+    this.addGeolocateControl();//anadir el vento 
+    await this.anadirLayerParking();
+    this.geolocate.trigger();
+
+  }
 
   public async estoyEstacionado() {
     this.loadingParkingLayer = await this.loadingController.create({
@@ -328,7 +342,7 @@ export class Tab2Page {
     // console.log('puntos: ', puntos);
     // console.log('npuntos: ', npuntos);
     var query = `https://api.mapbox.com/directions-matrix/v1/mapbox/driving/${puntos}?sources=0&destinations=${npuntos}&annotations=duration,distance&access_token=` + this.accessToken;
-    
+
     let response = await fetch(query);
     let data = await response.json();
     this.bestLocationParking(data.distances[0]);
