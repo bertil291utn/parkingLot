@@ -267,10 +267,12 @@ export class Tab2Page {
     // var query = 'https://api.mapbox.com/v4/' + tileset + '/tilequery/' + myLatLng.lng + ',' + myLatLng.lat + '.json?radius=' + radius + '&limit=' + limit + '&access_token=' + this.accessToken;
     //1000 en limite para que no haya limite. Este es usado para el metodo de los dos parkings mas cercanos para que traiga solo los 10 primeros registros
     //m_around metros a la redonda 100m de radio 
-    var query = `https://wsparking.herokuapp.com/nearby_parking?lon=${myLatLng.lng}&lat=${myLatLng.lat}&tipo=${this.tipoAutomovil}&m_around=100&limite=1000`;
+    var query = `https://wsparking.herokuapp.com/parking/distance_array?lat_init=${myLatLng.lat}&lon_init=${myLatLng.lng}&tipo_parking=${this.tipoAutomovil}`;
+    // var query = `https://wsparking.herokuapp.com/nearby_parking?lon=${myLatLng.lng}&lat=${myLatLng.lat}&tipo=${this.tipoAutomovil}&m_around=100&limite=1000`;
     // var query = 'https://wsparking.herokuapp.com/parqueaderos/';
     let response = await fetch(query);
     this.geojsonaux = await response.json();
+    console.log(this.geojsonaux);
 
 
     // await $.ajax({
