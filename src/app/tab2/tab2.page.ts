@@ -5,7 +5,6 @@ import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-direct
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { TitleCasePipe, NgSwitchCase } from '@angular/common';
-import * as $ from "jquery";
 import { ApirestserviceService } from '../services/apirestservice.service';
 import { environment } from '../../environments/environment';
 
@@ -28,7 +27,7 @@ export class Tab2Page {
   dirEnable: boolean = true;//activar o desactivar el view de la direccion, inicia mostrando
   directions;//var para la direciones y rutas
   geojsonaux;//valor global auxiliar para pintar en 
-  tipoAutomovil = 0;
+  tipoAutomovil = 1;//inciiar con 0 si quieres mostrar todos
   geolocate; //boton azul de ubicacion 
   brujula;//boton de burjula pararegresar a laroeientaicon original al mapa
   currentMarkers = [];//tods los marcadores que sestan en el mapa (autmo,moto,especial)
@@ -401,9 +400,13 @@ export class Tab2Page {
 
 
   private async anadirLayerParking() {
+    //get del web services todos los arqueaderos disponibles a 100 m a laredonde
     await this.httpTitleReqParking();
-    this.asignarObjetoGeoJson();
-    // await this.httpDistanceReq();
+    // this.asignarObjetoGeoJson();//para mostrar todos
+    //cuando actives esto cambia el tipoautomovil a 0 en la decalracion de variables arriba
+    //esta opcion se crean los objetos en caso de que se euruian mostrar todos los parqueaderos disponibles que esten 100 m a la redonda
+    //este metodos requiere encontrar los dos parkings mas cercanos que esten disponibles 
+    await this.httpDistanceReq();//para mostrar los mas cercanos
 
     // this.addLayer();//crear el layer en el mapa
     this.addcustomMarkers();
