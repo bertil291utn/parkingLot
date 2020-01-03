@@ -267,11 +267,12 @@ export class Tab2Page {
     // var query = 'https://api.mapbox.com/v4/' + tileset + '/tilequery/' + myLatLng.lng + ',' + myLatLng.lat + '.json?radius=' + radius + '&limit=' + limit + '&access_token=' + this.accessToken;
     //1000 en limite para que no haya limite. Este es usado para el metodo de los dos parkings mas cercanos para que traiga solo los 10 primeros registros
     //m_around metros a la redonda 100m de radio 
-    var query = `https://wsparking.herokuapp.com/parking/distance_array?lat_init=${myLatLng.lat}&lon_init=${myLatLng.lng}&tipo_parking=${this.tipoAutomovil}`;
+    //var query = `https://wsparking.herokuapp.com/parking/distance_array?lat_init=${myLatLng.lat}&lon_init=${myLatLng.lng}&tipo_parking=${this.tipoAutomovil}`;
     // var query = `https://wsparking.herokuapp.com/nearby_parking?lon=${myLatLng.lng}&lat=${myLatLng.lat}&tipo=${this.tipoAutomovil}&m_around=100&limite=1000`;
     // var query = 'https://wsparking.herokuapp.com/parqueaderos/';
-    let response = await fetch(query);
-    this.geojsonaux = await response.json();
+    // let response = await fetch(query);
+    // this.geojsonaux = await response.json();
+    this.geojsonaux = await this.apirestservice.distance_array(myLatLng, this.tipoAutomovil).toPromise();
     console.log(this.geojsonaux);
 
 
@@ -406,7 +407,7 @@ export class Tab2Page {
     await this.httpTitleReqParking();
     // this.asignarObjetoGeoJson();//para mostrar todos
     //cuando actives esto cambia el tipoautomovil a 0 en la decalracion de variables arriba
-    //esta opcion se crean los objetos en caso de que se euruian mostrar todos los parqueaderos disponibles que esten 100 m a la redonda
+    //esta opcion se crean los objetos en caso de que se quieran mostrar todos los parqueaderos disponibles que esten 100 m a la redonda
     //este metodos requiere encontrar los dos parkings mas cercanos que esten disponibles 
     await this.httpDistanceReq();//para mostrar los mas cercanos
 

@@ -8,10 +8,10 @@ import { HTTP } from '@ionic-native/http/ngx';
 })
 export class ApirestserviceService {
 
-  mainBasePath = 'https://wsparking.herokuapp.com/';
+  mainBasePath = 'https://wsparking.herokuapp.com/parking/';
   constructor(private httpnative: HTTP
-    // ,private http: HttpClient
-    ) { }
+    , private http: HttpClient
+  ) { }
 
 
   public nearbySearch(lon: number, lat: number, tipo: number) {
@@ -24,8 +24,9 @@ export class ApirestserviceService {
     return this.httpnative.get(this.mainBasePath + url, {}, {});
   }
 
-  // private makeRequestGet2(url: string) {
-  //   return this.http.get(this.mainBasePath + url);
-  // }
+  public distance_array(myLatLng, tipoAutomovil) {
+    let url = `distance_array?lat_init=${myLatLng.lat}&lon_init=${myLatLng.lng}&tipo_parking=${tipoAutomovil}`;
+    return this.http.get(this.mainBasePath + url);
+  }
 
 }//end service
