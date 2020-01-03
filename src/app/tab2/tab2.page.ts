@@ -113,7 +113,7 @@ export class Tab2Page {
     //poner como reservado durante un minuto en la BD , si en ese tiempo el de la zona azul no pone como estacionado el puesto se libera 
     //pasado el un minuto comprobar si hay comprobacion por parte del senor de la zona azul 
     //cuando el zona azul pone estacionado directamente no hay necesidad de comprobacion 
-    let mensaje = 'Usted se encuentra estacionado en el parking No. ' + this.propiedadesObject.adicional.id;
+    let mensaje = 'Usted se encuentra estacionado en el parking No. ' + this.propiedadesObject.adicional.eid;
     this.actionPresentToast(mensaje, 4000);
 
 
@@ -338,7 +338,7 @@ export class Tab2Page {
       if (idx === array.length - 1) {//the last item in the array
         semicolon = '';
       }
-      puntos += element.longitude + ',' + element.latitude + semicolon;
+      puntos += element.longitud + ',' + element.latitud + semicolon;
       npuntos += (idx + 1) + semicolon;
     });
     // console.log('puntos: ', puntos);
@@ -424,12 +424,12 @@ export class Tab2Page {
       let el = document.createElement('img');
       el.className = 'marker';
       let tipo = '';
-      if (marker.properties.id_tipo == 1)
+      if (marker.properties.tipo == 1)
         tipo = 'car.png';
-      else if (marker.properties.id_tipo == 2)
-        tipo = 'special.png';
-      else
+      else if (marker.properties.tipo == 2)
         tipo = 'motorbike.png';
+      else
+        tipo = 'special.png';
       // el.style.backgroundImage = 'url(./../assets/parkingicons/' + tipo + ')';
       el.src = 'assets/parkingicons/' + tipo;
       el.style.width = '40px';
@@ -502,7 +502,7 @@ export class Tab2Page {
         },
         "circle-color": [
           'match',
-          ['get', 'id_tipo'],
+          ['get', 'tipo'],
           '1', '#FF8C00',
           '3', '#9ACD32',
           '2', '#008000',
@@ -558,7 +558,7 @@ export class Tab2Page {
       };//objeto de feature elaborar un array de este objeto para asignar al parametro de features en la variable geojson
       features.properties = obj;
       features.id = +obj.id;
-      features.geometry.coordinates = [+obj.longitude, +obj.latitude];
+      features.geometry.coordinates = [+obj.longitud, +obj.latitud];
       featuresArray.push(features);//add a un array
     });
     this.geojson.features = featuresArray;//anadir el array de features en el campo fetures del objeto geojson
