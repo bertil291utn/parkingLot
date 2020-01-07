@@ -45,42 +45,44 @@
         </ion-col>
       </ion-row>
       <span *ngIf="updates">
-      <ion-row>
-        <ion-col>
-          <section>
-            <header>email</header>
-            <ion-item lines="none">
-              <ion-input type="email" formControlName="email" color="primary">
-              </ion-input>
-            </ion-item>
-          </section>
-        </ion-col>
-        <ion-col>
-          <section>
-            <header>whatsapp</header>
-            <ion-item lines="none">
-              <ion-input type="tel" formControlName="whatsapp" color="primary">
-              </ion-input>
-            </ion-item>
-          </section>
-        </ion-col>
+        <ion-row>
+          <ion-col>
+            <section>
+              <header>email</header>
+              <ion-item lines="none">
+                <ion-input type="email" formControlName="email" color="primary">
+                </ion-input>
+              </ion-item>
+            </section>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <section>
+              <header>whatsapp</header>
+              <ion-item lines="none">
+                <ion-input max="20" type="tel" formControlName="whatsapp" color="primary">
+                </ion-input>
+              </ion-item>
+            </section>
+          </ion-col>
 
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <section>
-            <header>tipo autom&oacute;vil</header>
-            <ion-item lines="none">
-              <ion-select color="primary" interface="popover" formControlName="tipo_auto">
-                <ion-select-option value="1">
-                  AUTOMOVIL</ion-select-option>
-                <ion-select-option value="2">
-                  MOTOCICLETA</ion-select-option>
-              </ion-select>
-            </ion-item>
-          </section>
-        </ion-col>
-      </ion-row>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <section>
+              <header>tipo autom&oacute;vil</header>
+              <ion-item lines="none">
+                <ion-select color="primary" interface="popover" formControlName="tipo_auto">
+                  <ion-select-option value="1">
+                    AUTOMOVIL</ion-select-option>
+                  <ion-select-option value="2">
+                    MOTOCICLETA</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </section>
+          </ion-col>
+        </ion-row>
       </span>
     </form>
   </ion-grid>
