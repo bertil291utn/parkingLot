@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { HTTP } from '@ionic-native/http/ngx';
 import { SugerenciasComponent } from './user/sugerencias/sugerencias.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
   declarations: [AppComponent, SugerenciasComponent],
@@ -21,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     StatusBar,
     SplashScreen,
     HTTP,
+    InAppBrowser,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

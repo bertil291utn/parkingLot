@@ -50,7 +50,7 @@ export class SugerenciasComponent implements OnInit {
       response = await this.apirestservice.post_comment(this.transaccionForm.value).toPromise().catch((err) => { console.log(err); });
       if (response['status'] == 200) {
         this.dismissViewController();
-        this.actionPresentToast('Enviado satisfactoriamente. Gracias por tu colaboraci\xF3n', 4000);
+        this.actionPresentToast('Enviado satisfactoriamente. Gracias por su colaboraci\xF3n', 4000);
         this.transaccionForm.reset();
         this.clickButton = false;
       }

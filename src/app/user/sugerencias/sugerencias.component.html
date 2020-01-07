@@ -14,14 +14,14 @@
 
 <ion-content padding>
   <ion-label>
-    Basado en tu exriencia con este aplicativo. Queremos conocer tus comentarios y sugerencias para la mejora o cambio
+    Basada en su experiencia con este aplicativo. Queremos conocer sus comentarios y sugerencias para la mejora o cambio
     dentro de la la aplicaci&oacute;n m&oacute;vil.
   </ion-label>
   <ion-grid>
     <form [formGroup]="transaccionForm">
       <br>
       <section>
-        <header>Env&iacute;anos tus comentarios y sugerencias</header>
+        <header>Env&iacute;enos sus comentarios y sugerencias</header>
         <ion-item lines="none">
           <ion-textarea formControlName="comentario" style="height: 100px;" color="primary">
           </ion-textarea>
@@ -31,7 +31,7 @@
       <ion-row>
         <ion-col>
           <section>
-            <header>¿Quieres recibir mas actualizaciones?</header>
+            <header>¿Quiere recibir mas actualizaciones?</header>
             <ion-item lines="none">
               <ion-select (ionChange)="getValueConcept($event)" color="primary" interface="popover"
                 formControlName="updates">

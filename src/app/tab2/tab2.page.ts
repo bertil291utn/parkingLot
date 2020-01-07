@@ -7,6 +7,7 @@ import { LoadingController, ToastController, AlertController } from '@ionic/angu
 import { TitleCasePipe, NgSwitchCase } from '@angular/common';
 import { ApirestserviceService } from '../services/apirestservice.service';
 import { environment } from '../../environments/environment';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-tab2',
@@ -34,7 +35,7 @@ export class Tab2Page {
 
   constructor(private geolocation: Geolocation, public loadingController: LoadingController, private titlecasePipe: TitleCasePipe
     , public toastController: ToastController, public apirestservice: ApirestserviceService,
-    public alertController: AlertController) {
+    public alertController: AlertController,private iab: InAppBrowser) {
 
 
   }
@@ -589,8 +590,12 @@ export class Tab2Page {
   }
 
   public showInfo() {
-    let msg = '<p> Esta aplicaci&oacute;n m&oacute;vil te permitir&aacute; encontrar los dos estacionamientos m&aacute;s cercanos a tu ubicaci&oacute;n actual.</p><p>Todos los datos son tomados del sistema <a href="https://saertza.com/epmmc/parking" target="_blank" rel="noopener noreferrer">SAERTZA</a> quien administra el parking de la Zona Azul.</p><p>Algunos de estos datos no van a demostrar la disponibilidad correctamente debido a la imprecisa informaci&oacute;n recibida por parte de esta entidad </p>';
+    let msg = `<p> Esta aplicaci&oacute;n m&oacute;vil te permitir&aacute; encontrar los dos estacionamientos m&aacute;s cercanos a tu ubicaci&oacute;n actual.</p><p>Todos los datos son tomados del sistema SAERTZA quien administra el parking de la Zona Azul.</p><p>Algunos de estos datos no van a demostrar la disponibilidad correctamente debido a la imprecisa informaci&oacute;n recibida por parte de esta entidad </p>`;
     this.alertControllerAction(msg);
+  }
+
+  public openUrl() {
+    console.log('open url');
   }
 
 
@@ -598,7 +603,20 @@ export class Tab2Page {
     const alert = await this.alertController.create({
       header: 'Informaci\xF3n',
       message: msg,
-      buttons: ['OK']
+      buttons: [{
+        text: 'saertza',
+        handler: () => {
+          console.log('saertza Okay');
+          this.iab.create('https://saertza.com/epmmc/parking/','_system');
+        }
+      }, {
+        text: 'salir',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: (blah) => {
+          console.log('Confirm Cancel: blah');
+        }
+      }]
     });
     await alert.present();
   }
