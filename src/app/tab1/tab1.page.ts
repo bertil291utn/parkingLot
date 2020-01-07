@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AlertController, ModalController } from '@ionic/angular';
+import { SugerenciasComponent } from '../user/sugerencias/sugerencias.component';
 
 @Component({
   selector: 'app-tab1',
@@ -7,7 +9,7 @@ import { Component } from '@angular/core';
 })
 export class Tab1Page {
   data;
-  constructor() { }
+  constructor(public modalController: ModalController) { }
 
 
   ionViewWillEnter() {
@@ -24,4 +26,18 @@ export class Tab1Page {
 
     console.log('Ir a revisar todas las recargas realizsadas');
   }
-}
+
+  public sendComments() {
+    this.presentModal();
+  }
+
+
+  private async presentModal() {
+    const modal = await this.modalController.create({
+      component: SugerenciasComponent
+    });
+    return await modal.present();
+  }
+
+
+}//end class

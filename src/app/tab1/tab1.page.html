@@ -1,13 +1,17 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>
-
+    <ion-title text-center>
+      Mis datos
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button color="light" (click)="sendComments()">
+      <ion-icon name="chatboxes"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
   <ion-grid *ngIf="data">
     <ion-row>
       <ion-col size="5">
@@ -19,10 +23,10 @@
 
       <ion-col>
         <h4>Stefano Rey</h4>
-        <p>10044536743</p>
-        <p>bertil_291@hotmail.com</p>
+        <p>100xxxxxxxxxx</p>
+        <p>miemail@hotmail.com</p>
         <br>
-        <ion-button color="primary" expand="block" fill="outline">editar</ion-button>
+        <!-- <ion-button color="primary" expand="block" fill="outline">editar</ion-button> -->
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -47,7 +51,7 @@
           <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
         </p>
         <br>
-        <ion-button color="primary" expand="block" fill="outline">editar</ion-button>
+        <!-- <ion-button color="primary" expand="block" fill="outline">editar</ion-button> -->
       </ion-col>
     </ion-row>
 
@@ -92,5 +96,11 @@
       <ion-label>Theme Your App</ion-label>
     </ion-item> -->
   </ion-list>
+  <br>
+  <ion-label>
+    La secci&oacute;n de recargas se pretende implementar una modalidad de pago prepago, donde tengas una recarga
+    anticipada y de ah&iacute; se ir&aacute; restando de acuerdo al uso que le des al parqueo. Al igual que una recarga
+    telef&oacute;nica a medida que se haga uso se va debitado de tu cuenta.
+  </ion-label>
 
 </ion-content>

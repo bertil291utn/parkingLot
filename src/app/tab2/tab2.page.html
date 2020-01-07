@@ -4,6 +4,9 @@
   <ion-button style="top: 15%; position: relative; float: right;" color="light" *ngIf="!reservado" (click)="refresh()">
     <ion-icon name="refresh"></ion-icon>
   </ion-button>
+  <ion-button *ngIf="!reservado" style="position: absolute; bottom: 0;" color="light" (click)="showInfo()">
+    <ion-icon name="information-circle-outline"></ion-icon>
+  </ion-button>
 
 
   <div style="top: 5%;left: 2%;position: relative;" *ngIf="reservado">

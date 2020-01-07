@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title text-center>
+      Comentarios y sugerencias
+    </ion-title>
+    <ion-buttons slot="end" style="margin-right: 2%;">
+      <ion-button (click)="dismissViewController()">
+        <ion-icon slot="icon-only" name="close" style="font-size: 1.8em;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-label>
+    Basado en tu exriencia con este aplicativo. Queremos conocer tus comentarios y sugerencias para la mejora o cambio
+    dentro de la la aplicaci&oacute;n m&oacute;vil.
+  </ion-label>
+  <ion-grid>
+    <form [formGroup]="transaccionForm">
+      <br>
+      <section>
+        <header>Env&iacute;anos tus comentarios y sugerencias</header>
+        <ion-item lines="none">
+          <ion-textarea formControlName="comentario" style="height: 100px;" color="primary">
+          </ion-textarea>
+        </ion-item>
+      </section>
+
+      <ion-row>
+        <ion-col>
+          <section>
+            <header>¿Quieres recibir mas actualizaciones?</header>
+            <ion-item lines="none">
+              <ion-select (ionChange)="getValueConcept($event)" color="primary" interface="popover"
+                formControlName="updates">
+                <ion-select-option value="1">
+                  SI</ion-select-option>
+                <ion-select-option value="0">
+                  NO</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </section>
+        </ion-col>
+      </ion-row>
+      <span *ngIf="updates">
+      <ion-row>
+        <ion-col>
+          <section>
+            <header>email</header>
+            <ion-item lines="none">
+              <ion-input type="email" formControlName="email" color="primary">
+              </ion-input>
+            </ion-item>
+          </section>
+        </ion-col>
+        <ion-col>
+          <section>
+            <header>whatsapp</header>
+            <ion-item lines="none">
+              <ion-input type="tel" formControlName="whatsapp" color="primary">
+              </ion-input>
+            </ion-item>
+          </section>
+        </ion-col>
+
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <section>
+            <header>tipo autom&oacute;vil</header>
+            <ion-item lines="none">
+              <ion-select color="primary" interface="popover" formControlName="tipo_auto">
+                <ion-select-option value="1">
+                  AUTOMOVIL</ion-select-option>
+                <ion-select-option value="2">
+                  MOTOCICLETA</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </section>
+        </ion-col>
+      </ion-row>
+      </span>
+    </form>
+  </ion-grid>
+
+
+  <ion-label *ngIf="clickButton&&!transaccionForm.valid" color="danger">No olvide ingresar todos los datos
+  </ion-label>
+  <br>
+  <ion-button expand="block" color="primary" (click)="sendComment()">
+    <span *ngIf="!clickButton||!transaccionForm.valid">enviar</span>
+    <ion-spinner *ngIf="transaccionForm.valid&&clickButton" name="lines"></ion-spinner>
+  </ion-button>
+</ion-content>

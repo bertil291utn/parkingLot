@@ -1,0 +1,24 @@
+header {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.25em;
+  text-transform: uppercase;
+  color: #021859;
+}
+section {
+  //margin-top: 1em;
+  // margin-bottom: 2.5em;
+}
+
+ion-item {
+  border-radius: 15px;
+  border: 1.5px solid #021859;
+  background-color: #ffffffbd;
+  margin-bottom: 2%;
+}
+
+ion-select {
+  width: 100%;
+  max-width: 100%;
+}

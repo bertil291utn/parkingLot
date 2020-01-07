@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
 import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.js';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { LoadingController, ToastController, AlertController } from '@ionic/angular';
 import { TitleCasePipe, NgSwitchCase } from '@angular/common';
 import { ApirestserviceService } from '../services/apirestservice.service';
 import { environment } from '../../environments/environment';
@@ -33,7 +33,8 @@ export class Tab2Page {
   currentMarkers = [];//tods los marcadores que sestan en el mapa (autmo,moto,especial)
 
   constructor(private geolocation: Geolocation, public loadingController: LoadingController, private titlecasePipe: TitleCasePipe
-    , public toastController: ToastController, public apirestservice: ApirestserviceService) {
+    , public toastController: ToastController, public apirestservice: ApirestserviceService,
+    public alertController: AlertController) {
 
 
   }
@@ -587,6 +588,20 @@ export class Tab2Page {
     toast.present();
   }
 
+  public showInfo() {
+    let msg = '<p> Esta aplicaci&oacute;n m&oacute;vil te permitir&aacute; encontrar los dos estacionamientos m&aacute;s cercanos a tu ubicaci&oacute;n actual.</p><p>Todos los datos son tomados del sistema <a href="https://saertza.com/epmmc/parking" target="_blank" rel="noopener noreferrer">SAERTZA</a> quien administra el parking de la Zona Azul.</p><p>Algunos de estos datos no van a demostrar la disponibilidad correctamente debido a la imprecisa informaci&oacute;n recibida por parte de esta entidad </p>';
+    this.alertControllerAction(msg);
+  }
+
+
+  private async alertControllerAction(msg: string) {
+    const alert = await this.alertController.create({
+      header: 'Informaci\xF3n',
+      message: msg,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
 
   public sectoMin(sec: number): string {
     if (sec < 60)//si segundos es menor a 60 que ponga directamente los segundos

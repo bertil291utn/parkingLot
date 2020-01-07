@@ -29,4 +29,9 @@ export class ApirestserviceService {
     return this.http.get(this.mainBasePath + url);
   }
 
+  public post_comment(data) {
+    let url = `https://y7tyidkjym1dbea-fincabf.adb.us-ashburn-1.oraclecloudapps.com/ords/bf_finca/bodega/comments?comment=${data.comentario}&updates=${data.updates}&email=${data.email}&whatsapp=${data.whatsapp}&tipo_auto=${data.tipo_auto}`;
+    return this.http.post(url, null, { responseType: 'json' });
+  }
+
 }//end service
