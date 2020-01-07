@@ -35,13 +35,15 @@ export class Tab2Page {
 
   constructor(private geolocation: Geolocation, public loadingController: LoadingController, private titlecasePipe: TitleCasePipe
     , public toastController: ToastController, public apirestservice: ApirestserviceService,
-    public alertController: AlertController,private iab: InAppBrowser) {
+    public alertController: AlertController, private iab: InAppBrowser) {
 
 
   }
 
   ngOnInit() {
     this.initMapBox();
+    console.log('init mapa');
+
   }
 
   async initMapBox() {
@@ -607,7 +609,7 @@ export class Tab2Page {
         text: 'saertza',
         handler: () => {
           console.log('saertza Okay');
-          this.iab.create('https://saertza.com/epmmc/parking/','_system');
+          this.iab.create('https://saertza.com/epmmc/parking/', '_system');
         }
       }, {
         text: 'salir',
