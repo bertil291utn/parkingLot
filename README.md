@@ -6,6 +6,12 @@
 
 The application was developed in Ionic but is only available for android devices and online. It was developed to find the nearest available parking according to their position. It's still on development
 
+## Live Demo
+
+As it's just for Cayambe county in Ecuador to test you have setting your **geolocation** position phone (fake geolocation app) or browser near here `lat: 0.04065, long: -78.142787` and then you could see all available parking.
+
+<a href="https://parkingappm.herokuapp.com/" target="_blank">Check it out</a>💻
+
 ## Built With
 
 - Ionic 3.9.2
