@@ -57,7 +57,7 @@ ionic cordova run android
 - Adding WebSockets to update empty lots in real-time.
 - Implement parking history showing the time, parking lot number and the person who printed the bill
 - Write user authentication with social media (Google, Facebook, etc)
-- Payment gateway with Stripe or others
+- Implement payment gateway with Stripe or others
 
 ## Authors
 
