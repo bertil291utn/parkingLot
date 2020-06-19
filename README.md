@@ -7,7 +7,7 @@
 
 <img src="https://user-images.githubusercontent.com/24902525/76875113-1a7ecc80-683e-11ea-8764-a13ce690eb0d.png" alt="image" width="400" />
 
-The application was developed in Ionic but is only available for android devices and online. It was written developed to help drivers find the nearest available parking space according to their position, [![Project Status: Suspended – Initial development has started, but there has not yet been a stable, usable release; work has been stopped for the time being but the author(s) intend on resuming work.](https://www.repostatus.org/badges/latest/suspended.svg)](https://www.repostatus.org/#suspended)
+The application is still in development, developed in Ionic but is only available for android devices and online. It was written to help drivers find the nearest available parking space according to their position. 
 
 ## Live Demo
 
@@ -58,9 +58,8 @@ ionic cordova run android
 
 - Github: [@bertil291utn](https://github.com/bertil291utn)
 - Twitter: [@btandayamo](https://twitter.com/batandayamo)
-- Linkedin: [Bertil Tandayamo](http://bit.ly/bertil_linkedin)
+- LinkedIn: [Bertil Tandayamo](http://bit.ly/bertil_linkedin)
 
 ## Show your support
 
-Hit the ⭐️ button if you like this project!
-
+If you got until here, show your love hitting the ⭐️ button, I'd really appreciate it.
