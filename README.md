@@ -52,6 +52,13 @@ First, you have connected your device or have an emulated device in your machine
 ionic cordova run android
 ```
 
+## Improvements 
+
+- Adding WebSockets to update empty lots in real-time.
+- Implement parking history showing the time, parking lot number and the person who printed the bill
+- Write user authentication with social media (Google, Facebook, etc)
+- Payment gateway with Stripe or others
+
 ## Authors
 
 👤 **Bertil Tandayamo**
