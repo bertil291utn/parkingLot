@@ -1,11 +1,8 @@
 # Shayana - Park
 
+### Android mobile application developed for searching parking Cayambe city
 
-> Android mobile application developed for searching parking Cayambe city
-
-
-
-<img src="https://user-images.githubusercontent.com/24902525/76875113-1a7ecc80-683e-11ea-8764-a13ce690eb0d.png" alt="image" width="400" />
+<p align="center"><img src="https://user-images.githubusercontent.com/24902525/76875113-1a7ecc80-683e-11ea-8764-a13ce690eb0d.png" alt="image" width="300" /></p>
 
 The application is still in development, developed in Ionic but is only available for android devices and online. It was written to help drivers find the nearest available parking space according to their position. 
 
@@ -13,19 +10,17 @@ The application is still in development, developed in Ionic but is only availabl
 
 As it's just for Cayambe county in Ecuador to test you have to set your **geolocation** position phone (fake geolocation app) or browser near here `lat: 0.04065, long: -78.142787` and then you could see all available parking.
 
-<a href="https://parkingappm.herokuapp.com/" target="_blank">Check it out</a>💻
+💻<a href="https://parkingappm.herokuapp.com/" target="_blank">Browser live</a>
+
+🎬[Clip description](https://www.loom.com/share/b13ddd6ee8b948129f1d01eb2638d20b)
 
 ## Built With
 
-- Ionic 3.9.2
-- SaSS 
-- Oracle Apex
-
-### Prerequisites
-
-- Node JS v.9
-- Java 
-- Android Studio
+- Ionic 4.0
+- HTML5
+- SCSS
+- MapBox Maps
+- MapBox API vectors
 
 ### Install
 Install Ionic 3.9.2
