@@ -10,9 +10,9 @@ The application is still in development, developed in Ionic but is only availabl
 
 - First go to the clip description
 
-🎬[Clip description](https://www.loom.com/share/b13ddd6ee8b948129f1d01eb2638d20b)
+🎬 [Clip description](https://www.loom.com/share/b13ddd6ee8b948129f1d01eb2638d20b)
 
-💻<a href="https://parkingappm.herokuapp.com/" target="_blank">Browser live</a>
+💻 <a href="https://parkingappm.herokuapp.com/" target="_blank">Go live</a>
 
 As it's just for Cayambe county in Ecuador to test you have to set your **geolocation** position phone (fake geolocation app) or browser near here `lat: 0.04065, long: -78.142787` and then you could see all available parking.
 
