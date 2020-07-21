@@ -40,7 +40,7 @@ npm install
 ```
 ### Deploy
 
-To deploy the application please write the localserver
+To deploy the application please write the local server
 ```
 ionic s
 ```
